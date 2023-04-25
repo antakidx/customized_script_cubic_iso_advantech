@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Exec=/etc/skel/program
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name[en_us]=advantech-ubuntu
+Name=advantech-ubuntu
+Terminal=true

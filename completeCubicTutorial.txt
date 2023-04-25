@@ -1,0 +1,76 @@
+Run Cubic
+Select a directory to store all data
+Select the ubuntu iso you desire
+Under the "Custom Disk..." column (right-side column), do the following:
+	In the "Filename" field, delete "ubuntu-" and add "advantech-" (ie my final result was "advantech-20.04.6-2023.04.17-desktop-amd64.iso")
+	In the "Disk Name" field, add "Advantech-" in front of everything (ie my final result was Advantech-Ubuntu 20.04.6 2023.04.17 LTS "Custom Focal Fossa")
+Once in the virtual environment, copy the following commands EXACTLY:
+
+mkdir /etc/skel/.config/
+mkdir /etc/skel/.config/autostart/
+apt update
+apt install gcc
+nano /etc/skel/CarrierTest.sh
+
+***copy contents of CarrierTestScriptForCubic.sh***
+
+nano /etc/skel/program.c
+
+***copy contents of c-programForCubicIso.txt***
+
+nano /etc/skel/.config/autostart/program.desktop
+
+***copy contents of desktopApplicationSourceCode.txt***
+
+chmod +x /etc/skel/CarrierTest.sh 
+chmod +x /etc/skel/program.c 
+chown root /etc/skel/CarrierTest.sh 
+chmod 4755 /etc/skel/CarrierTest.sh 
+cd /etc/skel/
+gcc program.c -o program
+chmod +x program
+chown root.root program
+chmod 4755 program
+cd ..
+cd ..   
+cd ~
+nano /etc/skel/.config/autostart/program.desktop
+chmod +x /etc/skel/.config/autostart/program.desktop 
+chown root /etc/skel/.config/autostart/program.desktop 
+chmod 4755 /etc/skel/.config/autostart/program.desktop
+nano /etc/netplan/01-network-manager-all.yaml ***copy following***
+			
+# Let NetworkManager manage all devices on this system
+network:
+  ethernets:
+    eno1:
+      dhcp4: no
+      addresses:
+        - 192.168.43.1/24
+      gateway4: 192.168.43.1
+      nameservers:
+        addresses: [8.8.8.8, 4.4.4.4]
+  version: 2
+  renderer: NetworkManager
+
+Hit "Next" button to exit virtual environment
+Unless you want to mess with installed/uninstalled packages, I would recommend just hitting "Next" button again
+Hit "Next" button
+I would stick with the default compression which is .gzip
+Hit generate button
+Once everything is done, copy the newly created iso to a USB stick
+Plug USB stick into a machine with Windows on it
+Copy iso from USB stick to somewhere on the machine
+Use Rufus to burn the iso onto a different USB stick (do GPT scheme with NTFS file system)
+Take the burned USB stick and plug it into a machine with Linux on it
+Run Gparted
+In top right corner, select the /dev that your USB is (if you are unsure just look at the GB size)
+Right click on the main partition and NTFS partition and unmount both
+Right click on main partition and select the "Resize/Move" option
+In the "Free Space Preceding" field, type anywhere from 1000-5000 and press enter button
+Click the "Resize/Move" button
+In the newly created space (labeled "unallocated"), right click and select the "New" option
+Leave everything default, but change the file system field to fat32
+Under the top menu, there will be a green checkmark; you MUST click this to apply the partition changes
+Click green check mark and wait for changes to take place (can take anywhere from 30 minutes to an hour and a half so get comfy)
+Voila
